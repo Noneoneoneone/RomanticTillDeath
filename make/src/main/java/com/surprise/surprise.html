@@ -877,12 +877,12 @@
             createIndicators();
             updateUI(); // 会设置 slide-count 为 1
 
-            // 可选：自动轮播
-            let autoInterval = setInterval(nextSlide, 5000);
-            carousel.addEventListener('mouseenter', () => clearInterval(autoInterval));
-            carousel.addEventListener('mouseleave', () => {
-                autoInterval = setInterval(nextSlide, 5000);
-            });
+            // // 可选：自动轮播
+            // let autoInterval = setInterval(nextSlide, 5000);
+            // carousel.addEventListener('mouseenter', () => clearInterval(autoInterval));
+            // carousel.addEventListener('mouseleave', () => {
+            //     autoInterval = setInterval(nextSlide, 5000);
+            // });
         });
 
 
