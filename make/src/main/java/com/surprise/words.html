@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宣言</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- 音乐播放器 -->
+    <div class="music-player" id="music-player">
+        <i class="fa fa-music music-icon" id="music-icon"></i>
+    </div>
+    <audio id="background-music" loop="">
+        <source src="audio/1.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bg-music">
+        <source src="audio/2.mp3" type="audio/mpeg">
+    </audio>
+
+</head>
+<body>
+    <div class="start-screen" id="startScreen">
+        <div class="start-content">
+            <h1>🌸给我听好啦🌸</h1>
+            <p>准备好接收 100 条幸福了吗？</p>
+            <button class="start-button" id="startButton">开始 ✨</button>
+        </div>
+    </div>
+
+    <div class="popup-container" id="popupContainer"></div>
+    <script src="js/messages.js"></script>
+    <script src="js/scriptword.js"></script>
+</body>
+</html>
+

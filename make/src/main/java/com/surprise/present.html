@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字动画</title>
+    <!-- 新增按钮样式 -->
+    <style>
+        #jump-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff4d94;
+            cursor: pointer;
+            z-index: 100; /* 确保在 canvas 上方 */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        #jump-btn:hover {
+            background: white;
+            transform: scale(1.05);
+            color: #ff1461;
+        }
+    </style>
+</head>
+<body style="margin: 0;">
+<canvas id="cvs" style="background:#000"></canvas>
+
+
+<!-- 新增跳转按钮 -->
+<button id="jump-btn">进入 Words</button>
+<!-- 音乐播放器 -->
+<div class="music-player" id="music-player">
+    <i class="fa fa-music music-icon" id="music-icon"></i>
+</div>
+<audio id="background-music" loop="">
+    <source src="audio/1.mp3" type="audio/mpeg">
+</audio>
+
+<script src="js/messages.js"></script>
+<script src="js/scriptword.js"></script>
+
+<script>
+    const cvs = document.getElementById('cvs')
+    cvs.width = document.documentElement.clientWidth
+    cvs.height = document.documentElement.clientHeight
+    const ctx = cvs.getContext('2d')
+    const { width, height } = cvs
+    let colors = []
+    const bgData = Array.from(new Array(400)).map(v => {
+        return {
+            x: Math.random() * width,
+            y: Math.random() * height,
+            step: Math.random() * 2.5 + 0.5
+        }
+    })
+    const sendText = (text, fontSize = ((width * 0.7) / text.length), stepV = 40) => {
+        ctx.font = `bold ${fontSize}px 微软雅黑`
+        ctx.fillStyle = '#000000'
+        ctx.fillRect(0, 0, width, height)
+        ctx.fillStyle = '#ffffff'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(text, width / 2, height / 2)
+        const data = ctx.getImageData(0, 0, width, height).data
+
+        let index = 0
+        let bl = 4
+        let useIndex = 0
+        for(let i=0;i<data.length;i+=4) {
+            const x = index % width
+            const y = Math.ceil(index / width)
+            if (x%bl === 0 && y%bl === 0 && data[i] === 255 && data[i+1] === 255 && data[i+2] === 255) {
+                const rx = Math.floor(Math.random() * fontSize) + width / 2 - fontSize / 2
+                const ry = Math.floor(Math.random() * fontSize) + height / 2 - fontSize / 2
+                const item = colors[useIndex]
+                if (item) {
+                    colors[useIndex] = {
+                        x,
+                        y,
+                        rx: item.x,
+                        ry: item.y,
+                        stepX: Math.abs(item.x - x) / stepV,
+                        stepY: Math.abs(item.y - y) / stepV
+                    }
+                } else {
+                    colors[useIndex] = {
+                        x,
+                        y,
+                        rx,
+                        ry,
+                        stepX: Math.abs(rx - x) / stepV,
+                        stepY: Math.abs(ry - y) / stepV
+                    }
+                }
+                useIndex++
+            }
+            index++
+        }
+        if (useIndex < colors.length) {
+            colors.splice(useIndex, colors.length - useIndex)
+        }
+    }
+    const render = () => {
+        ctx.beginPath()
+        ctx.clearRect(0, 0, width, height)
+        colors.forEach(v => {
+            if (v.rx > v.x) {
+                v.rx-=v.stepX
+                if (v.rx < v.x) {
+                    v.rx = v.x
+                }
+            } else if (v.rx < v.x) {
+                v.rx+=v.stepX
+                if (v.rx > v.x) {
+                    v.rx = v.x
+                }
+            }
+            if (v.ry > v.y) {
+                v.ry-=v.stepY
+                if (v.ry < v.y) {
+                    v.ry = v.y
+                }
+            } else if (v.ry < v.y) {
+                v.ry+=v.stepY
+                if (v.ry > v.y) {
+                    v.ry = v.y
+                }
+            }
+            ctx.rect(v.rx, v.ry, 3, 3)
+        })
+        bgData.forEach(v => {
+            v.y = v.y > height ? 0 : (v.y + v.step)
+            ctx.rect(v.x, v.y, 2, 2)
+        })
+        ctx.fill()
+        requestAnimationFrame(render)
+    }
+    render()
+    const awaitSendText = async (txt, fontSize, stepV) => {
+        return new Promise((resolve) => {
+            sendText(txt, fontSize, stepV)
+            colors.sort(v => Math.random() - 0.5)
+            setTimeout(() => resolve(), 1500 + (stepV > 40 ? 1000 : 0))
+        })
+    }
+    const run = async () => {
+        const text = '5，4，3，2，1，马可小朋友！，开心快乐！，●▽●！'.split('，')
+        for(let i=0;i<text.length;i++) {
+            await awaitSendText(text[i], 100, i === 0 ? 100 : 40)
+        }
+        run()
+    }
+    run()
+
+    // 👇 新增：绑定跳转事件
+    document.getElementById('jump-btn').addEventListener('click', () => {
+        window.location.href = 'words.html'; // 跳转到 words.html
+    });
+</script>
+</body>
+</html>
