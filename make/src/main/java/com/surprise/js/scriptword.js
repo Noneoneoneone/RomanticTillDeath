@@ -239,50 +239,66 @@ class RomanticPopup {
     }
     
     // 显示结束信息
+    // showEndMessage() {
+    //     console.log('程序已结束');
+    //
+    //     // 创建结束提示
+    //     const endDiv = document.createElement('div');
+    //     endDiv.style.cssText = `
+    //         position: fixed;
+    //         top: 50%;
+    //         left: 50%;
+    //         transform: translate(-50%, -50%);
+    //         background: linear-gradient(135deg, #FFFFFFFF 0%, #FFFFFFFF 100%);
+    //         padding: 3rem 5rem;
+    //         border-radius: 30px;
+    //         box-shadow: 0 30px 80px #69A5FFFF;
+    //         text-align: center;
+    //         opacity: 0;
+    //         transition: opacity 1s ease;
+    //         z-index: 10000;
+    //         // border: 3px solid #69A5FFFF;
+    //     `;
+    //
+    //     endDiv.innerHTML = `
+    //         <h1 style="font-size: 3rem; margin-bottom: 1rem; background: linear-gradient(135deg, #7369ff 0%, #698cff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">✨</h1>
+    //         <p style="font-size: 1.5rem; color: #1524c7; font-weight: 600;">我在，一直在。</p>
+    //         <button onclick="location.reload()" style="
+    //             margin-top: 2rem;
+    //             padding: 0.8rem 2rem;
+    //             font-size: 1.2rem;
+    //             background: linear-gradient(135deg, #1524c7 0%, #698cff 100%);
+    //             color: #f0fcff;
+    //             border: none;
+    //             border-radius: 50px;
+    //             cursor: pointer;
+    //             font-weight: 600;
+    //             box-shadow: 0 10px 30px rgb(21,36,199);
+    //             transition: all 0.3s ease;
+    //         " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 20px rgb(21,36,199)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgb(21,36,199)'">再看一次 ✨</button>
+    //     `;
+    //
+    //     document.body.appendChild(endDiv);
+    //
+    //     setTimeout(() => {
+    //         endDiv.style.opacity = '1';
+    //     }, 100);
+    // }
+
     showEndMessage() {
         console.log('程序已结束');
-        
-        // 创建结束提示
+
         const endDiv = document.createElement('div');
-        endDiv.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #FFFFFFFF 0%, #FFFFFFFF 100%);
-            padding: 3rem 5rem;
-            border-radius: 30px;
-            box-shadow: 0 30px 80px #69A5FFFF;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 1s ease;
-            z-index: 10000;
-            // border: 3px solid #69A5FFFF;
-        `;
-        
+        endDiv.className = 'end-popup';   // 使用类名
         endDiv.innerHTML = `
-            <h1 style="font-size: 3rem; margin-bottom: 1rem; background: linear-gradient(135deg, #7369ff 0%, #698cff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">✨</h1>
-            <p style="font-size: 1.5rem; color: #1524c7; font-weight: 600;">我在，一直在。</p>
-            <button onclick="location.reload()" style="
-                margin-top: 2rem;
-                padding: 0.8rem 2rem;
-                font-size: 1.2rem;
-                background: linear-gradient(135deg, #1524c7 0%, #698cff 100%);
-                color: #f0fcff;
-                border: none;
-                border-radius: 50px;
-                cursor: pointer;
-                font-weight: 600;
-                box-shadow: 0 10px 30px rgb(21,36,199);
-                transition: all 0.3s ease;
-            " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 20px rgb(21,36,199)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgb(21,36,199)'">再看一次 ✨</button>
-        `;
-        
+        <h1>✨</h1>
+        <p>我在，一直在。</p>
+        <button onclick="location.reload()">再看一次 ✨</button>
+    `;
         document.body.appendChild(endDiv);
-        
-        setTimeout(() => {
-            endDiv.style.opacity = '1';
-        }, 100);
+
+        // 延迟显示
+        setTimeout(() => endDiv.classList.add('visible'), 100);
     }
 }
 
