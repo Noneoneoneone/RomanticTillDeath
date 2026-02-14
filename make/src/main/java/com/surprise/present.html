@@ -152,7 +152,7 @@
         })
     }
     const run = async () => {
-        const text = '5，4，3，2，1，马可小朋友！，开心快乐！，●▽●！'.split('，')
+        const text = '5，4，3，2，1，祝，马可，小朋友！，开心！，快乐！，●▽●！'.split('，')
         for(let i=0;i<text.length;i++) {
             await awaitSendText(text[i], 100, i === 0 ? 100 : 40)
         }
